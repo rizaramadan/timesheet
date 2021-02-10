@@ -122,6 +122,35 @@ namespace Timesheet.Controllers
             return View(activity);
         }
 
+        public async Task<IActionResult> Delete(long? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var activity = await _context.Activities
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (activity == null)
+            {
+                return NotFound();
+            }
+
+            SetDateViewData(activity.Date);
+            return View(await _timesheetService.GetEditViewModel(activity));
+        }
+
+        // POST: Activities/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(long id)
+        {
+            var activity = await _context.Activities.FindAsync(id);
+            _context.Activities.Remove(activity);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index), new { day = activity.Date });
+        }
+
         private DateTime SetDateViewData(DateTime? day)
         {
             var date = day ?? DateTime.Now;
