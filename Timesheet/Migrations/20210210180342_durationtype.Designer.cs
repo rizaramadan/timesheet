@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Timesheet.Data;
@@ -9,9 +10,10 @@ using Timesheet.Data;
 namespace Timesheet.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210210180342_durationtype")]
+    partial class durationtype
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -161,10 +163,6 @@ namespace Timesheet.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ActivityGroupId");
-
-                    b.HasIndex("ActivityTypeId");
 
                     b.ToTable("Activities");
                 });
@@ -348,25 +346,6 @@ namespace Timesheet.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Timesheet.Models.Activity", b =>
-                {
-                    b.HasOne("Timesheet.Models.ActivityGroup", "ActivityGroup")
-                        .WithMany()
-                        .HasForeignKey("ActivityGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Timesheet.Models.ActivityType", "ActivityType")
-                        .WithMany()
-                        .HasForeignKey("ActivityTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ActivityGroup");
-
-                    b.Navigation("ActivityType");
                 });
 #pragma warning restore 612, 618
         }

@@ -12,22 +12,22 @@ using Timesheet.Models;
 namespace Timesheet.Controllers
 {
     [Authorize]
-    public class ActivityGroupsController : Controller
+    public class ActivitiesController : Controller
     {
         private readonly AppDbContext _context;
 
-        public ActivityGroupsController(AppDbContext context)
+        public ActivitiesController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: ActivityGroups
+        // GET: Activities
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ActivityGroups.ToListAsync());
+            return View(await _context.Activities.ToListAsync());
         }
 
-        // GET: ActivityGroups/Details/5
+        // GET: Activities/Details/5
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null)
@@ -35,39 +35,39 @@ namespace Timesheet.Controllers
                 return NotFound();
             }
 
-            var activityGroup = await _context.ActivityGroups
+            var activity = await _context.Activities
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (activityGroup == null)
+            if (activity == null)
             {
                 return NotFound();
             }
 
-            return View(activityGroup);
+            return View(activity);
         }
 
-        // GET: ActivityGroups/Create
+        // GET: Activities/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: ActivityGroups/Create
+        // POST: Activities/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description")] ActivityGroup activityGroup)
+        public async Task<IActionResult> Create([Bind("Id,ActivityGroupId,Date,Duration,Info,ActivityTypeId,Frequency,CreatedAt,CreatedBy,UpdatedAt,UpdatedBy")] Activity activity)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(activityGroup);
+                _context.Add(activity);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(activityGroup);
+            return View(activity);
         }
 
-        // GET: ActivityGroups/Edit/5
+        // GET: Activities/Edit/5
         public async Task<IActionResult> Edit(long? id)
         {
             if (id == null)
@@ -75,22 +75,22 @@ namespace Timesheet.Controllers
                 return NotFound();
             }
 
-            var activityGroup = await _context.ActivityGroups.FindAsync(id);
-            if (activityGroup == null)
+            var activity = await _context.Activities.FindAsync(id);
+            if (activity == null)
             {
                 return NotFound();
             }
-            return View(activityGroup);
+            return View(activity);
         }
 
-        // POST: ActivityGroups/Edit/5
+        // POST: Activities/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Id,Name,Description")] ActivityGroup activityGroup)
+        public async Task<IActionResult> Edit(long id, [Bind("Id,ActivityGroupId,Date,Duration,Info,ActivityTypeId,Frequency,CreatedAt,CreatedBy,UpdatedAt,UpdatedBy")] Activity activity)
         {
-            if (id != activityGroup.Id)
+            if (id != activity.Id)
             {
                 return NotFound();
             }
@@ -99,12 +99,12 @@ namespace Timesheet.Controllers
             {
                 try
                 {
-                    _context.Update(activityGroup);
+                    _context.Update(activity);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ActivityGroupExists(activityGroup.Id))
+                    if (!ActivityExists(activity.Id))
                     {
                         return NotFound();
                     }
@@ -115,10 +115,10 @@ namespace Timesheet.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(activityGroup);
+            return View(activity);
         }
 
-        // GET: ActivityGroups/Delete/5
+        // GET: Activities/Delete/5
         public async Task<IActionResult> Delete(long? id)
         {
             if (id == null)
@@ -126,30 +126,30 @@ namespace Timesheet.Controllers
                 return NotFound();
             }
 
-            var activityGroup = await _context.ActivityGroups
+            var activity = await _context.Activities
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (activityGroup == null)
+            if (activity == null)
             {
                 return NotFound();
             }
 
-            return View(activityGroup);
+            return View(activity);
         }
 
-        // POST: ActivityGroups/Delete/5
+        // POST: Activities/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
-            var activityGroup = await _context.ActivityGroups.FindAsync(id);
-            _context.ActivityGroups.Remove(activityGroup);
+            var activity = await _context.Activities.FindAsync(id);
+            _context.Activities.Remove(activity);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ActivityGroupExists(long id)
+        private bool ActivityExists(long id)
         {
-            return _context.ActivityGroups.Any(e => e.Id == id);
+            return _context.Activities.Any(e => e.Id == id);
         }
     }
 }

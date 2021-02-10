@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,10 +27,12 @@ namespace Timesheet.Models
         public string Name { get; set; }
     }
 
-    public enum ActivityDuration
+    public enum DurationType
     {
         Unknown = 0,
+        [Display(Name = "Minute(s)")]
         Minutes,
+        [Display(Name = "Hour(s)")]
         Hours
     }
 
@@ -37,10 +40,13 @@ namespace Timesheet.Models
     {
         public long Id { get; set; }
         public long ActivityGroupId { get; set; }
+        public ActivityGroup ActivityGroup { get; set; }
         public DateTime Date { get; set; }
-        public ActivityDuration Duration { get; set; }
+        public int Duration { get; set; }
+        public DurationType DurationType { get; set; }
         public string Info { get; set; }
         public long ActivityTypeId { get; set; }
+        public ActivityType ActivityType { get; set; }
         public int Frequency { get; set; }
         public DateTime CreatedAt { get; set; }
         public long CreatedBy { get; set; }

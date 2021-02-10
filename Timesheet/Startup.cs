@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Timesheet.Data;
 using Timesheet.Models;
+using Timesheet.Services;
 
 namespace Timesheet
 {
@@ -54,6 +55,7 @@ namespace Timesheet
             });
             services.AddRazorPages();
             services.AddControllersWithViews();
+            services.AddScoped<ITimesheetService, TimesheetService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

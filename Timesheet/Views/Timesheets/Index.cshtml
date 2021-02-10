@@ -1,54 +1,110 @@
-﻿@{
+﻿@inject Timesheet.Data.AppDbContext _appDbContext 
+@model IEnumerable<Timesheet.Models.Activity>
+
+
+@{
     ViewData["Title"] = "Home Page";
+    DateTime date = (DateTime)ViewData["date"];
+    var prevDate = date.AddDays(-1).Date;
+    var nextDate = date.AddDays(1).Date;
 }
 
 <div class="container">
     <main role="main" class="pb-3">
-
-        <h3>Manage your Timesheet</h3>
+        <div class="d-flex justify-content-between bd-highlight mb-3">
+            <div class="p-2 bd-highlight"> <a role="button"  class="btn btn-outline-primary" asp-area="" asp-controller="Timesheets" asp-action="Index" asp-route-day="@prevDate"> Go to Previous Day </a></div>
+            <div class="p-2 bd-highlight"><h3>Manage Timesheet @date.Day - @date.Month - @date.Year  </h3></div>
+            <div class="p-2 bd-highlight"> <a role="button"  class="btn btn-outline-primary" asp-area="" asp-controller="Timesheets" asp-action="Index"  asp-route-day="@nextDate"> Go to Next Day </a></div>
+        </div>
 
         <div>
             <hr>
             <div class="row">
                 <div class="col-md-3">
                     <ul class="nav nav-pills flex-column">
-                        <li class="nav-item"><a class="nav-link active" id="profile" href="/Identity/Account/Manage">Profile</a></li>
-                        <li class="nav-item"><a class="nav-link" id="email" href="/Identity/Account/Manage/Email">Email</a></li>
-                        <li class="nav-item"><a class="nav-link" id="change-password" href="/Identity/Account/Manage/ChangePassword">Password</a></li>
-                        <li class="nav-item"><a class="nav-link" id="two-factor" href="/Identity/Account/Manage/TwoFactorAuthentication">Two-factor authentication</a></li>
-                        <li class="nav-item"><a class="nav-link" id="personal-data" href="/Identity/Account/Manage/PersonalData">Personal data</a></li>
+                        @if (DateTime.Today != date.Date)
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-action="Index">Go To Today</a></li>
+                        }
+                        <li class="nav-item"><a class="nav-link" asp-action="Create" asp-route-day="@date">Create New</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#">List</a></li>
                     </ul>
 
                 </div>
                 <div class="col-md-9">
+                    <div>
+                        <div class="row">
 
-                    <h4>Profile</h4>
-
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <form id="profile-form" method="post" novalidate="novalidate">
-
-                                <div class="form-group">
-                                    <label for="Username">Username</label>
-                                    <input class="form-control" disabled="" type="text" id="Username" name="Username" value="riza.notif@gmail.com">
-                                </div>
-                                <div class="form-group">
-                                    <label for="Input_PhoneNumber">Phone number</label>
-                                    <input class="form-control" type="tel" data-val="true" data-val-phone="The Phone number field is not a valid phone number." id="Input_PhoneNumber" name="Input.PhoneNumber" value="">
-                                    <span class="text-danger field-validation-valid" data-valmsg-for="Input.PhoneNumber" data-valmsg-replace="true"></span>
-                                </div>
-                                <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
-                                <input name="__RequestVerificationToken" type="hidden" value="CfDJ8HPr8mQG-EtLptPaae4rdtZwQ5QmeHFkOWnLwioPaP9zM47xjCQEmEXBdqWetb2iB_IVaE84h9QyWhzImJlT9IO5TvLvxbdJM6mYBb5IjPwk5cWI3sn1gp03EjYVJOndAGinYLEUHjAoBbtJ0xGAl8AVS_4Fl8jQ4Id72JLesPsBxXVV75ihrSaHT1FddClALA">
-                            </form>
+                            @if (Model.Any())
+                            {
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Activity Group
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Duration)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Info)
+                                            </th>
+                                            <th>
+                                                Activity Type
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Frequency)
+                                            </th>
+                                            @if (Model.Any())
+                                            {
+                                                <th></th>
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @{
+                                                        var group = await _appDbContext.ActivityGroups.FindAsync(item.ActivityGroupId);
+                                                    }
+                                                    @group.Name
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Duration)  @Html.DisplayFor(modelItem => item.DurationType)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Info)
+                                                </td>
+                                                <td>
+                                                    @{
+                                                        var type = await _appDbContext.ActivityTypes.FindAsync(item.ActivityTypeId);
+                                                    }
+                                                    @type.Name
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Frequency)
+                                                </td>
+                                                <td>
+                                                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                                </td>
+                                            </tr>
+                                         }
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            { 
+                                <h5>No activity yet for this day, <a  role="button"  class="btn btn-primary"  asp-action="Create" asp-route-day="@date">please create one</a> if needed.</h5>
+                            }
                         </div>
                     </div>
-
 
                 </div>
             </div>
         </div>
-
-
     </main>
 </div>
