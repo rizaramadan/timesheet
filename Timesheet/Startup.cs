@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
+ 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Timesheet.Data;
+using Timesheet.Models;
 
 namespace Timesheet
 {
@@ -32,8 +33,26 @@ namespace Timesheet
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<Models.AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<AppDbContext>();
+            services.AddIdentity<AppUser, AppRole>(config =>
+            {
+                config.SignIn.RequireConfirmedEmail = false;
+                config.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
+            })
+            .AddDefaultUI()
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+
+                options.LoginPath = "/Identity/Account/Login";
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                options.SlidingExpiration = true;
+            });
+            services.AddRazorPages();
             services.AddControllersWithViews();
         }
 
@@ -63,7 +82,7 @@ namespace Timesheet
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Timesheets}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }

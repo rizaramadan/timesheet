@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,12 @@ using Timesheet.Models;
 
 namespace Timesheet.Controllers
 {
-    public class HomeController : Controller
+    [Authorize]
+    public class TimesheetsController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<TimesheetsController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public TimesheetsController(ILogger<TimesheetsController> logger)
         {
             _logger = logger;
         }
