@@ -33,14 +33,20 @@ namespace Timesheet.Controllers
         public async Task<IActionResult> Index(DateTime? day)
         {
             DateTime date = SetDateViewData(day);
-            var userId = User?.FindFirstValue(ClaimTypes.NameIdentifier);
-            var userlong = long.Parse(userId);
+            long userlong = GetUserId();
             var activites = _context.Activities
                 .AsNoTracking()
                 .Where(x => x.Date.Date == date.Date && x.CreatedBy == userlong)
                 .OrderBy(x => x.CreatedAt);
 
             return View(await activites.ToListAsync());
+        }
+
+        private long GetUserId()
+        {
+            var userId = User?.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userlong = long.Parse(userId);
+            return userlong;
         }
 
         // GET: Activities/Create
@@ -59,9 +65,9 @@ namespace Timesheet.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userId = User?.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = GetUserId();
                 activity.CreatedAt = DateTime.Now;
-                activity.CreatedBy = long.Parse(userId);
+                activity.CreatedBy = userId;
                 activity.UpdatedAt = activity.CreatedAt;
                 activity.UpdatedBy = activity.CreatedBy;
                 _context.Add(activity);
@@ -78,7 +84,8 @@ namespace Timesheet.Controllers
                 return NotFound();
             }
 
-            var activity = await _context.Activities.FindAsync(id);
+            var userId = GetUserId();
+            var activity = await _context.Activities.FirstOrDefaultAsync(x => x.Id == id && x.CreatedBy == userId);
             if (activity == null)
             {
                 return NotFound();
@@ -103,12 +110,11 @@ namespace Timesheet.Controllers
             {
                 try
                 {
-                    var userId = User?.FindFirstValue(ClaimTypes.NameIdentifier);
-                    var userLong = long.Parse(userId); 
-                    var activityDb = await _context.Activities.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id && x.CreatedBy == userLong);
+                    var userId = GetUserId();
+                    var activityDb = await _context.Activities.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id && x.CreatedBy == userId);
                     activity.CreatedBy = activityDb.CreatedBy;
                     activity.CreatedAt = activityDb.CreatedAt;
-                    activity.UpdatedBy = userLong;
+                    activity.UpdatedBy = userId;
                     activity.UpdatedAt = DateTime.Now;
                     _context.Update(activity);
                     await _context.SaveChangesAsync();
@@ -129,8 +135,9 @@ namespace Timesheet.Controllers
                 return NotFound();
             }
 
+            var userId = GetUserId();
             var activity = await _context.Activities
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id && m.CreatedBy == userId);
             if (activity == null)
             {
                 return NotFound();
@@ -145,7 +152,8 @@ namespace Timesheet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
-            var activity = await _context.Activities.FindAsync(id);
+            var userId = GetUserId();
+            var activity = await _context.Activities.FirstOrDefaultAsync(m => m.Id == id && m.CreatedBy == userId);
             _context.Activities.Remove(activity);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index), new { day = activity.Date });

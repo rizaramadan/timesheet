@@ -7,6 +7,7 @@
     DateTime date = (DateTime)ViewData["date"];
     var prevDate = date.AddDays(-1).Date;
     var nextDate = date.AddDays(1).Date;
+    var i = 1;
 }
 
 <div class="container">
@@ -37,63 +38,66 @@
 
                             @if (Model.Any())
                             {
-                                <table class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                Activity Group
-                                            </th>
-                                            <th>
-                                                @Html.DisplayNameFor(model => model.Duration)
-                                            </th>
-                                            <th>
-                                                @Html.DisplayNameFor(model => model.Info)
-                                            </th>
-                                            <th>
-                                                Activity Type
-                                            </th>
-                                            <th>
-                                                @Html.DisplayNameFor(model => model.Frequency)
-                                            </th>
-                                            @if (Model.Any())
-                                            {
-                                                <th></th>
-                                            }
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in Model)
-                                        {
+                                <div class="table-responsive-sm">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
                                             <tr>
-                                                <td>
-                                                    @{
-                                                        var group = await _appDbContext.ActivityGroups.FindAsync(item.ActivityGroupId);
-                                                    }
-                                                    @group.Name
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Duration)  @Html.DisplayFor(modelItem => item.DurationType)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Info)
-                                                </td>
-                                                <td>
-                                                    @{
-                                                        var type = await _appDbContext.ActivityTypes.FindAsync(item.ActivityTypeId);
-                                                    }
-                                                    @type.Name
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Frequency)
-                                                </td>
-                                                <td>
-                                                    <a role="button" class="btn btn-primary btn-sm"  asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                                                    <a role="button" class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                                                </td>
+                                                <th>No</th>
+                                                <th>
+                                                    Activity Group
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Duration)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Info)
+                                                </th>
+                                                <th>
+                                                    Activity Type
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Frequency)
+                                                </th>
+                                                <th>Action</th>
                                             </tr>
-                                         }
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>  @i @{i++;}  </td>
+                                                    <td>
+                                                        @{
+                                                            var group = await _appDbContext.ActivityGroups.FindAsync(item.ActivityGroupId);
+                                                        }
+                                                        @group.Name
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Duration)  @Html.DisplayFor(modelItem => item.DurationType)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Info)
+                                                    </td>
+                                                    <td>
+                                                        @{
+                                                            var type = await _appDbContext.ActivityTypes.FindAsync(item.ActivityTypeId);
+                                                        }
+                                                        @type.Name
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Frequency)
+                                                    </td>
+                                                    <td>
+                                                        <div class="btn-group" role="group">
+                                                            <a role="button" class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                                            <a role="button" class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                             }
+                                        </tbody>
+                                    </table>
+                                </div>
                             }
                             else
                             { 

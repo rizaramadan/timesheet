@@ -24,7 +24,7 @@ namespace Timesheet.Controllers
         // GET: ActivityGroups
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ActivityGroups.ToListAsync());
+            return View(await _context.ActivityGroups.OrderBy(x => x.Order).ToListAsync());
         }
 
         // GET: ActivityGroups/Details/5
@@ -56,7 +56,7 @@ namespace Timesheet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description")] ActivityGroup activityGroup)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Order")] ActivityGroup activityGroup)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +88,7 @@ namespace Timesheet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Id,Name,Description")] ActivityGroup activityGroup)
+        public async Task<IActionResult> Edit(long id, [Bind("Id,Name,Description,Order")] ActivityGroup activityGroup)
         {
             if (id != activityGroup.Id)
             {

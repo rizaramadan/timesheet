@@ -25,7 +25,7 @@ namespace Timesheet.Services
 
         public async Task<TimesheetViewModel> GetCreateViewModel()
         {
-            var groups = await _context.ActivityGroups.AsNoTracking().ToListAsync();
+            var groups = await _context.ActivityGroups.AsNoTracking().OrderBy(x => x.Order).ToListAsync();
             var types = await _context.ActivityTypes.AsNoTracking().ToListAsync();
             var TimesheetViewModel = new TimesheetViewModel
             {
