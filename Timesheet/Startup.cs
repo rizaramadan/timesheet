@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
- 
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Timesheet.Data;
+using Timesheet.Domains.Data;
 using Timesheet.Models;
 using Timesheet.Services;
 
@@ -56,6 +56,13 @@ namespace Timesheet
             services.AddRazorPages();
             services.AddControllersWithViews();
             services.AddScoped<ITimesheetService, TimesheetService>();
+
+            services.Configure<RazorViewEngineOptions>(options =>
+            {
+                //options.ViewLocationFormats.Clear();
+                options.ViewLocationFormats.Add($"/Domains/{{1}}/{{0}}{RazorViewEngine.ViewExtension}");
+                options.ViewLocationFormats.Add($"/Domains/Shared/{{0}}{RazorViewEngine.ViewExtension}");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

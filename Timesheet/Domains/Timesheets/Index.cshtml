@@ -1,0 +1,113 @@
+﻿@model IEnumerable<Timesheet.Domains.Timesheets.Activity>
+
+
+@{
+    ViewData["Title"] = "Home Page";
+    DateTime date = (DateTime)ViewData["date"];
+    var prevDate = date.AddDays(-1).Date;
+    var nextDate = date.AddDays(1).Date;
+    var timesheet = (Timesheet.Domains.Timesheets.TimesheetViewModel)ViewData[nameof(Timesheet.Services.ITimesheetService)];
+    var i = 1;
+}
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <div class="d-flex justify-content-between bd-highlight mb-3">
+            <div class="p-2 bd-highlight"> <a role="button"  class="btn btn-outline-primary" asp-area="" asp-controller="Timesheets" asp-action="Index" asp-route-day="@prevDate"> Go to Previous Day </a></div>
+            <div class="p-2 bd-highlight"><h3>Manage Timesheet @date.Day - @date.Month - @date.Year  </h3></div>
+            <div class="p-2 bd-highlight"> <a role="button"  class="btn btn-outline-primary" asp-area="" asp-controller="Timesheets" asp-action="Index"  asp-route-day="@nextDate"> Go to Next Day </a></div>
+        </div>
+
+        <div>
+            <hr>
+            <div class="row">
+                <div class="col-md-3">
+                    <ul class="nav nav-pills flex-column">
+                        @if (DateTime.Today != date.Date)
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-action="Index">Go To Today</a></li>
+                        }
+                        <li class="nav-item"><a class="nav-link" asp-action="Create" asp-route-day="@date">Create New</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#">List</a></li>
+                    </ul>
+
+                </div>
+                <div class="col-md-9">
+                    <div>
+                        <div class="row">
+
+                            @if (Model.Any())
+                            {
+                                <div class="table-responsive-sm">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>
+                                                    Activity Group
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Duration)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Info)
+                                                </th>
+                                                <th>
+                                                    Activity Type
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Frequency)
+                                                </th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>  @i @{i++;}  </td>
+                                                    <td>
+                                                        @{
+                                                            var group = timesheet.GroupSelectItem.FirstOrDefault(x => x.Value == $"{item.ActivityGroupId}");
+                                                        }
+                                                        @group.Text
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Duration)  @Html.DisplayFor(modelItem => item.DurationType)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Info)
+                                                    </td>
+                                                    <td>
+                                                        @{
+                                                            var type = timesheet.TypeSelectItem.FirstOrDefault(x => x.Value == $"{item.ActivityTypeId}");
+                                                        }
+                                                        @type.Text
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Frequency)
+                                                    </td>
+                                                    <td>
+                                                        <div class="btn-group" role="group">
+                                                            <a role="button" class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                                            <a role="button" class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                             }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                            else
+                            { 
+                                <h5>No activity yet for this day, <a  role="button"  class="btn btn-primary"  asp-action="Create" asp-route-day="@date">please create one</a> if needed.</h5>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

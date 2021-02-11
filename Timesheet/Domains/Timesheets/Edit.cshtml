@@ -1,0 +1,84 @@
+﻿@model Timesheet.Domains.Timesheets.TimesheetViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    DateTime date = (DateTime)ViewData["date"];
+    var prevDate = date.AddDays(-1).Date;
+    var nextDate = date.AddDays(1).Date;
+    Model.Date = date;
+}
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <div class="d-flex justify-content-between bd-highlight mb-3">
+            <div class="p-2 bd-highlight"> <a role="button"  class="btn btn-outline-primary" asp-area="" asp-controller="Timesheets" asp-action="Create" asp-route-day="@prevDate"> Go to Previous Day </a></div>
+            <div class="p-2 bd-highlight"><h3>Manage Timesheet @date.Day - @date.Month - @date.Year  </h3></div>
+            <div class="p-2 bd-highlight"> <a role="button"  class="btn btn-outline-primary"  asp-area="" asp-controller="Timesheets" asp-action="Create" asp-route-day="@nextDate"> Go to Next Day </a></div>
+        </div>
+
+        <div>
+            <hr>
+            <div class="row">
+                <div class="col-md-3">
+                    <ul class="nav nav-pills flex-column">
+                        @if (DateTime.Today != date.Date)
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-action="Create">Go To Today</a></li>
+                        }
+                        <li class="nav-item"><a class="nav-link "asp-action="Create" asp-route-day="@date">Create New</a></li>
+                        <li class="nav-item"><a class="nav-link " asp-action="Index" asp-route-day="@date">List</a></li>
+                        <li class="nav-item"><a class="nav-link active" asp-action="Edit">Edit</a></li>
+                    </ul>
+
+                </div>
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <form asp-action="Edit">
+                                <input asp-for="Id" class="form-control" hidden />
+                                <input asp-for="Date" class="form-control" hidden />
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="ActivityGroupId" class="control-label">Activity Group</label>
+                                    <select asp-for="ActivityGroupId" asp-items="Model.GroupSelectItem" class="form-control"></select>
+                                    <span asp-validation-for="ActivityGroupId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Duration" class="control-label"></label>
+                                    <div class="input-group">
+                                        <input asp-for="Duration" class="form-control" />
+                                        <select asp-for="DurationType" asp-items="Timesheet.Domains.Timesheets.TimesheetViewModel.DurationTypes" class="form-control"></select>
+                                    </div>
+                                    <span asp-validation-for="Duration" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Info" class="control-label"></label>
+                                    <textarea asp-for="Info" class="form-control"></textarea>
+                                    <span asp-validation-for="Info" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ActivityTypeId" class="control-label">Activity Type</label>
+                                    <select asp-for="ActivityTypeId" asp-items="Model.TypeSelectItem" class="form-control"></select>
+                                    <span asp-validation-for="ActivityTypeId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Frequency" class="control-label"></label>
+                                    <input asp-for="Frequency" class="form-control" />
+                                    <span asp-validation-for="Frequency" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" value="Save" class="btn btn-primary" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
