@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -56,12 +57,24 @@ namespace Timesheet
             services.AddRazorPages();
             services.AddControllersWithViews();
             services.AddScoped<ITimesheetService, TimesheetService>();
+            services.AddTransient<IEmailSender, MailKitEmailSender>();
+            services.Configure<MailKitEmailSenderOptions>(options =>
+            {
+                options.HostAddress = Configuration["MailKit:SMTP:Address"];
+                options.HostPort = Convert.ToInt32(Configuration["MailKit:SMTP:Port"]);
+                options.HostUsername = Configuration["MailKit:SMTP:Account"];
+                options.HostPassword = Configuration["MailKit:SMTP:Password"];
+                options.SenderEmail = Configuration["MailKit:SMTP:SenderEmail"];
+                options.SenderName = Configuration["MailKit:SMTP:SenderName"];
+            });
 
             services.Configure<RazorViewEngineOptions>(options =>
             {
                 //options.ViewLocationFormats.Clear();
-                options.ViewLocationFormats.Add($"/Domains/{{1}}/{{0}}{RazorViewEngine.ViewExtension}");
                 options.ViewLocationFormats.Add($"/Domains/Shared/{{0}}{RazorViewEngine.ViewExtension}");
+                options.ViewLocationFormats.Add($"/Domains/{{1}}/{{0}}{RazorViewEngine.ViewExtension}");
+                options.PageViewLocationFormats.Add($"/Domains/Shared/{{0}}{RazorViewEngine.ViewExtension}");
+                options.AreaPageViewLocationFormats.Add($"/Domains/Shared/{{0}}{RazorViewEngine.ViewExtension}");
             });
         }
 
