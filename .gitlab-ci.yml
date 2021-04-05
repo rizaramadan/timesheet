@@ -10,8 +10,7 @@ Timesheet-deploy:
   script:
     - mkdir -p ~/Timesheet
     - mkdir -p ~/Timesheetnew
-    - pwd
-    - dotnet ef database update
+    - dotnet ef database update --project Timesheet/Timesheet.csproj
     - dotnet publish -c Release -o ~/Timesheetnew
     - rm ~/Timesheetnew/appsettings.json
     - cp ~/Timesheet/appsettings.json ~/Timesheetnew/appsettings.json
