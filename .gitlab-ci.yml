@@ -1,0 +1,29 @@
+stages:
+  - deploy
+
+Timesheet-deploy:
+  stage: deploy
+  
+  tags:
+    - dotnet-core
+    
+  script:
+    - mkdir -p ~/Timesheet
+    - mkdir -p ~/Timesheetnew
+    - dotnet publish -c Release -o ~/Timesheetnew
+    - rm ~/Timesheetnew/appsettings.json
+    - cp ~/Timeesheet/appsettings.json ~/Timesheetnew/appsettings.json
+    - sudo /bin/systemctl stop timesheet
+    - unlink ~/Timesheet/wwwroot/_uploads || true
+    - mv ~/Timesheet ~/Timesheetold
+    - mv ~/Timesheetnew ~/Timesheet
+    - ln -s ~/Timesheet-upload/ ~/Timesheet/wwwroot/_uploads 
+    - sudo /bin/systemctl restart timesheet
+    - rm -rf ~/Timesheetold
+    - rm -rf ~/Timesheetnew
+    
+  variables:
+    GIT_STRATEGY: fetch
+    
+  only:
+    - main
