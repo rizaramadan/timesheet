@@ -1,10 +1,22 @@
 ﻿<h3>Features</h3>
 <p>This site contains many unrelated features, all are for testing purpose. Like its name, any goes.</p>
 
-<div class="card" style="width: 18rem;">
-    <div class="card-body">
-        <h5 class="card-title">Timesheets</h5>
-        <p class="card-text">People can fill timesheets, and can specify the activity types and groups</p>
-        <a  asp-area="" asp-controller="Timesheets" asp-action="Index"     class="btn btn-primary">Timesheet Table</a>
+<div class="row">
+
+    <div class="card m-2" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Appointment Scheduler</h5>
+            <p class="card-text">People can add free time, propose appointment and accept / reject appointment</p>
+            <a asp-area="" asp-controller="FreeTimes" asp-action="Index" class="btn btn-primary">Free Times</a>
+        </div>
     </div>
+
+    <div class="card m-2" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Timesheets</h5>
+            <p class="card-text">People can fill timesheets, and can specify the activity types and groups</p>
+            <a asp-area="" asp-controller="Timesheets" asp-action="Index" class="btn btn-primary">Timesheet Table</a>
+        </div>
+    </div>
+
 </div>

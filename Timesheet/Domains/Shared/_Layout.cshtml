@@ -19,13 +19,22 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle black-text" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Scheduler
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" asp-area="" asp-controller="FreeTimes" asp-action="Index">Free Time </a>
+
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle black-text" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Timesheet
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" asp-area="" asp-controller="Timesheets" asp-action="Index"    >Timesheets Table</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Timesheets" asp-action="Index">Timesheets Table</a>
                                 <a class="dropdown-item" asp-area="" asp-controller="ActivityGroups" asp-action="Index">Activity Group</a>
-                                <a class="dropdown-item" asp-area="" asp-controller="ActivityTypes" asp-action="Index" >Activity Types</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="ActivityTypes" asp-action="Index">Activity Types</a>
 
                             </div>
                         </li>

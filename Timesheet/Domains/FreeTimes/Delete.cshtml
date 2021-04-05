@@ -1,0 +1,84 @@
+﻿@model Timesheet.Domains.FreeTimeEstimate.FreeTime
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<div class="container">
+    <main role="main" class="pb-3">
+
+        <h2>Manage FreeTime</h2>
+
+        <div>
+            <hr>
+            <div class="row">
+                <div class="col-md-3">
+                    <ul class="nav nav-pills flex-column">
+                        <li class="nav-item"><a class="nav-link " asp-action="create">Create New</a></li>
+                        <li class="nav-item"><a class="nav-link " asp-action="Index">List</a></li>
+                        <li class="nav-item"><a class="nav-link " asp-action="Edit" asp-route-id="@Model.Id" >Edit @Model.Name </a></li>
+                        <li class="nav-item"><a class="nav-link " asp-action="Details" asp-route-id="@Model.Id" >Detail of @Model.Name </a></li>
+                        <li class="nav-item"><a class="nav-link active bg-danger" href="#">Delete @Model.Name </a></li>
+                    </ul>
+
+                </div>
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <dl class="row">
+                                <dt class = "col-sm-12">
+                                    @Html.DisplayNameFor(model => model.DayOfWeek)
+                                </dt>
+                                <dd class = "col-sm-12">
+                                    @Html.DisplayFor(model => model.DayOfWeek)
+                                </dd>
+                                <dt class = "col-sm-12">
+                                    @Html.DisplayNameFor(model => model.HourStart)
+                                </dt>
+                                <dd class = "col-sm-12">
+                                    @Html.DisplayFor(model => model.HourStart)
+                                </dd>
+                                <dt class = "col-sm-12">
+                                    @Html.DisplayNameFor(model => model.HourEnd)
+                                </dt>
+                                <dd class = "col-sm-12">
+                                    @Html.DisplayFor(model => model.HourEnd)
+                                </dd>
+                                <dt class = "col-sm-12">
+                                    @Html.DisplayNameFor(model => model.CreatedAt)
+                                </dt>
+                                <dd class = "col-sm-12">
+                                    @Html.DisplayFor(model => model.CreatedAt)
+                                </dd>
+                                <dt class = "col-sm-12">
+                                    @Html.DisplayNameFor(model => model.CreatedBy)
+                                </dt>
+                                <dd class = "col-sm-12">
+                                    @Html.DisplayFor(model => model.CreatedBy)
+                                </dd>
+                                <dt class = "col-sm-12">
+                                    @Html.DisplayNameFor(model => model.UpdatedAt)
+                                </dt>
+                                <dd class = "col-sm-12">
+                                    @Html.DisplayFor(model => model.UpdatedAt)
+                                </dd>
+                                <dt class = "col-sm-12">
+                                    @Html.DisplayNameFor(model => model.UpdatedBy)
+                                </dt>
+                                <dd class = "col-sm-12">
+                                    @Html.DisplayFor(model => model.UpdatedBy)
+                                </dd>
+                            </dl>
+                            <form asp-action="Delete">
+                                <input type="hidden" asp-for="Id" />
+                                <input type="submit" value="Delete" class="btn btn-danger" /> 
+                            </form>
+                        </div>
+                    </div>
+               </div>
+            </div>
+        </div>
+    </main>
+</div>
