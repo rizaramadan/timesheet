@@ -12,7 +12,7 @@ Timesheet-deploy:
     - mkdir -p ~/Timesheetnew
     - dotnet publish -c Release -o ~/Timesheetnew
     - rm ~/Timesheetnew/appsettings.json
-    - cp ~/Timeesheet/appsettings.json ~/Timesheetnew/appsettings.json
+    - cp ~/Timesheet/appsettings.json ~/Timesheetnew/appsettings.json
     - sudo /bin/systemctl stop timesheet
     - unlink ~/Timesheet/wwwroot/_uploads || true
     - mv ~/Timesheet ~/Timesheetold
