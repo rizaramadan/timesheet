@@ -104,7 +104,7 @@ namespace Timesheet
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Timesheets}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }
