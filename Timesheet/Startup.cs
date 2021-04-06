@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -67,6 +68,21 @@ namespace Timesheet
                     options.ClientId = Configuration["Auth:Google:ClientId"];
                     options.ClientSecret = Configuration["Auth:Google:ClientSecret"];
                     options.CorrelationCookie.SameSite = SameSiteMode.Lax;
+                    options.Events = new OAuthEvents()
+                    {
+                        OnRedirectToAuthorizationEndpoint = context =>
+                        {
+                            if (context.RedirectUri.Contains("redirect_uri=http%"))
+                            {
+                                context.Response.Redirect(context.RedirectUri.Replace("redirect_uri=http%", "redirect_uri=https%"));
+                            }
+                            else 
+                            {
+                                context.Response.Redirect(context.RedirectUri);
+                            }
+                            return Task.FromResult(0);
+                        }
+                    };
                 });
 
             services.AddScoped<ITimesheetService, TimesheetService>();
