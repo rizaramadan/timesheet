@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Sentry.AspNetCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -125,6 +126,7 @@ namespace Timesheet
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSentryTracing();
 
             app.UseAuthentication();
             app.UseAuthorization();
