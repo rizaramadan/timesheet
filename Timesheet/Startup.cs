@@ -73,9 +73,9 @@ namespace Timesheet
                     {
                         OnRedirectToAuthorizationEndpoint = context =>
                         {
-                            if (context.RedirectUri.Contains("redirect_uri=http%"))
+                            if (context.RedirectUri.Contains("http%"))
                             {
-                                context.Response.Redirect(context.RedirectUri.Replace("redirect_uri=http%", "redirect_uri=https%"));
+                                context.Response.Redirect(context.RedirectUri.Replace("http%", "https%"));
                             }
                             else 
                             {
