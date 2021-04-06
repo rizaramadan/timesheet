@@ -64,27 +64,24 @@ namespace Timesheet
             services.AddAuthentication()
                 .AddGoogle(options =>
                 {
-                    IConfigurationSection googleAuthNSection =
-                        Configuration.GetSection("Authentication:Google");
-
                     options.ClientId = Configuration["Auth:Google:ClientId"];
                     options.ClientSecret = Configuration["Auth:Google:ClientSecret"];
                     options.CorrelationCookie.SameSite = SameSiteMode.Lax;
-                    //options.Events = new OAuthEvents()
-                    //{
-                    //    OnRedirectToAuthorizationEndpoint = context =>
-                    //    {
-                    //        if (context.RedirectUri.Contains("http%"))
-                    //        {
-                    //            context.Response.Redirect(context.RedirectUri.Replace("http%", "https%"));
-                    //        }
-                    //        else 
-                    //        {
-                    //            context.Response.Redirect(context.RedirectUri);
-                    //        }
-                    //        return Task.FromResult(0);
-                    //    }
-                    //};
+                    options.Events = new OAuthEvents()
+                    {
+                        OnRedirectToAuthorizationEndpoint = context =>
+                        {
+                            if (context.RedirectUri.Contains("http%"))
+                            {
+                                context.Response.Redirect(context.RedirectUri.Replace("http%", "https%"));
+                            }
+                            else
+                            {
+                                context.Response.Redirect(context.RedirectUri);
+                            }
+                            return Task.FromResult(0);
+                        }
+                    };
                 });
 
             services.AddScoped<ITimesheetService, TimesheetService>();
