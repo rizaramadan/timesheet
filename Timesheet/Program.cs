@@ -21,6 +21,7 @@ namespace Timesheet
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseSentry("https://664114c4143e4f7a9caa14c846ba5a5d@o444778.ingest.sentry.io/5707400");
                 });
     }
 }
