@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -56,6 +57,18 @@ namespace Timesheet
             });
             services.AddRazorPages();
             services.AddControllersWithViews();
+
+            services.AddAuthentication()
+                .AddGoogle(options =>
+                {
+                    IConfigurationSection googleAuthNSection =
+                        Configuration.GetSection("Authentication:Google");
+
+                    options.ClientId = Configuration["Auth:Google:ClientId"];
+                    options.ClientSecret = Configuration["Auth:Google:ClientSecret"];
+                    options.CorrelationCookie.SameSite = SameSiteMode.Lax;
+                });
+
             services.AddScoped<ITimesheetService, TimesheetService>();
             services.AddTransient<IEmailSender, MailKitEmailSender>();
             services.Configure<MailKitEmailSenderOptions>(options =>
@@ -92,7 +105,7 @@ namespace Timesheet
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();

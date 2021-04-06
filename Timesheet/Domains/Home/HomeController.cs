@@ -12,5 +12,9 @@ namespace Timesheet.Domains
         {
             return View();
         }
+
+        public IActionResult Policy() => View();
+
+        public IActionResult Tos() => View();
     }
 }
