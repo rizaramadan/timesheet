@@ -24,9 +24,12 @@ namespace Timesheet
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        IWebHostEnvironment Env;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            Env = env;
         }
 
         public IConfiguration Configuration { get; }
@@ -67,6 +70,10 @@ namespace Timesheet
                     options.ClientId = Configuration["Auth:Google:ClientId"];
                     options.ClientSecret = Configuration["Auth:Google:ClientSecret"];
                     options.CorrelationCookie.SameSite = SameSiteMode.Lax;
+                    if (Env.IsProduction())
+                    {
+                        options.CallbackPath = "https://timesheet.core-web-app.com/signin-google";
+                    }
                     
                     options.Events = new OAuthEvents()
                     {
