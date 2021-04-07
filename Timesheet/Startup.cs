@@ -70,10 +70,7 @@ namespace Timesheet
                     options.ClientId = Configuration["Auth:Google:ClientId"];
                     options.ClientSecret = Configuration["Auth:Google:ClientSecret"];
                     options.CorrelationCookie.SameSite = SameSiteMode.Lax;
-                    if (Env.IsProduction())
-                    {
-                        options.CallbackPath = new PathString("https://timesheet.core-web-app.com/signin-google");
-                    }
+                    
                     
                     options.Events = new OAuthEvents()
                     {
@@ -117,10 +114,21 @@ namespace Timesheet
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            if (env.IsProduction())
+            {
+                app.Use((context, next) =>
+                {
+                    context.Request.Scheme = "https";
+                    return next();
+                });
+            }
+
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
+
+            
 
             if (env.IsDevelopment())
             {
