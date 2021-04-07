@@ -1,1 +1,15 @@
-﻿this is policy
+﻿@{ 
+    var atoz = "abcdefghijklmnopqrstuvwxyz";
+}
+
+<h2>Table of Chars</h2>
+
+
+@foreach (var cx in atoz)
+{
+    @foreach (var cy in atoz) 
+    {
+        var word = $"{cx}{cy} ";
+        @word
+    }
+}
