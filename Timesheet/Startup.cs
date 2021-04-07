@@ -72,7 +72,7 @@ namespace Timesheet
                     options.CorrelationCookie.SameSite = SameSiteMode.Lax;
                     if (Env.IsProduction())
                     {
-                        options.CallbackPath = "https://timesheet.core-web-app.com/signin-google";
+                        options.CallbackPath = new PathString("https://timesheet.core-web-app.com/signin-google");
                     }
                     
                     options.Events = new OAuthEvents()
