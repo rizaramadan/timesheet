@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Timesheet.Domains.ActivityGroups;
 using Timesheet.Domains.ActivityTypes;
 using Timesheet.Domains.FreeTimeEstimate;
+using Timesheet.Domains.Stocks;
 using Timesheet.Domains.Timesheets;
 using Timesheet.Models;
 
@@ -30,6 +31,11 @@ namespace Timesheet.Domains.Data
 
         #region scheduler
         public DbSet<FreeTime> FreeTimes { get; set; }
+        #endregion
+
+        #region Stocks
+        public DbSet<StockTrx> StockTrxs { get; set; }
+        public DbSet<StockTrxAddition> StockTrxAdditions { get; set; }
         #endregion
 
         public AppDbContext(DbContextOptions<AppDbContext> options)

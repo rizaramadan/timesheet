@@ -1,0 +1,97 @@
+﻿@model IEnumerable<Timesheet.Domains.Stocks.StockTrx>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <h2>Manage StockTrx</h2>
+        <div>
+            <hr>
+            <div class="row">
+                <div class="col-md-3">
+                    <ul class="nav nav-pills flex-column">
+                        <li class="nav-item"><a class="nav-link" asp-action="Create">Create New</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#">List</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-9">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Name)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Emiten)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Lot)
+                                </th>
+                                <th>
+                                    Buy price
+                                </th>
+                                <th>
+                                    No loss (0.9%)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a role="button" class="btn btn-outline-primary btn-sm" asp-action="Edit" asp-route-id="@item.Id">Sell</a>
+                                            <a role="button" class="btn btn-outline-danger btn-sm" asp-action="Add" asp-route-id="@item.Id">Add</a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <th>
+                                        @Html.DisplayFor(modelItem => item.Emiten)
+                                    </th>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Lot)
+                                    </td>
+                                    <td class="number">
+                                        @Html.DisplayFor(modelItem => item.BuyPrice)
+                                    </td>
+                                    <td class="number">
+                                        @{
+                                            var cl1 = item.BuyPrice * 1.009;
+                                        }
+                                        @cl1 
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a role="button" class="btn btn-outline-secondary btn-sm" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                            <a role="button" class="btn btn-outline-success btn-sm" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $(".number").each(function () {
+                var number = parseInt($(this).text());
+                var formatted = number.toLocaleString();
+                $(this).html(formatted);
+            });
+
+        });
+    </script>
+}

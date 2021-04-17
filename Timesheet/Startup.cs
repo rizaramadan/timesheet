@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Timesheet.Domains.Data;
+using Timesheet.Domains.Stocks;
 using Timesheet.Models;
 using Timesheet.Services;
 
@@ -91,6 +92,8 @@ namespace Timesheet
 
             services.AddScoped<ITimesheetService, TimesheetService>();
             services.AddTransient<IEmailSender, MailKitEmailSender>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IStockService, StockService>();
             services.Configure<MailKitEmailSenderOptions>(options =>
             {
                 options.HostAddress = Configuration["MailKit:SMTP:Address"];

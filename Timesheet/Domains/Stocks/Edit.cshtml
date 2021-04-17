@@ -1,0 +1,68 @@
+﻿@model Timesheet.Domains.Stocks.StockTrx
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <h2>Manage StockTrx</h2>
+        <div>
+            <hr>
+            <div class="row">
+                <div class="col-md-3">
+                    <ul class="nav nav-pills flex-column">
+                        <li class="nav-item"><a class="nav-link " asp-action="create">Create New</a></li>
+                        <li class="nav-item"><a class="nav-link " asp-action="Index">List</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#">Edit  @Model.Name - @Model.Emiten </a></li>
+                        <li class="nav-item"><a class="nav-link " asp-action="Details" asp-route-id="@Model.Id" >Details @Model.Name </a></li>
+                    </ul>
+                </div>
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-4">
+                             <form asp-action="Edit">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <input type="hidden" asp-for="Id" />
+                                    <div class="form-group">
+                                        <label asp-for="Name" class="control-label"></label>
+                                        <input asp-for="Name" class="form-control" />
+                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Emiten" class="control-label"></label>
+                                        <input asp-for="Emiten" class="form-control" />
+                                        <span asp-validation-for="Emiten" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Lot" class="control-label"></label>
+                                        <input asp-for="Lot" class="form-control" />
+                                        <span asp-validation-for="Lot" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">Buy Price</label>
+                                        <input asp-for="BuyPrice" class="form-control" />
+                                        <span asp-validation-for="BuyPrice" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">Sell Price</label>
+                                        <input asp-for="SellPrice" class="form-control" />
+                                        <span asp-validation-for="SellPrice" class="text-danger"></span>
+                                    </div>
+                                <div class="form-group">
+                                    <input type="submit" value="Save" class="btn btn-primary" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+               </div>
+            </div>
+        </div>
+    </main>
+</div>
+            
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

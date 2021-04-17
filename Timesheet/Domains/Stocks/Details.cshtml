@@ -1,0 +1,194 @@
+﻿@using Timesheet.Domains.Stocks
+@model StockTrx
+
+@{
+    ViewData["Title"] = "Details";
+    List<StockTrxAddition> stockAdditions = Model.StockTrxAdditions?.OrderBy(x => x.Id).ThenBy(x => x.CreatedAt)?.ToList();
+    if (stockAdditions == null)
+    {
+        stockAdditions = new(0);
+    }
+
+}
+
+
+<div class="container">
+    <main role="main" class="pb-3">
+
+        <h2>Manage StockTrx</h2>
+
+        <div>
+            <hr>
+            <div class="row">
+                <div class="col-md-3">
+                    <ul class="nav nav-pills flex-column">
+                        <li class="nav-item"><a class="nav-link " asp-action="create">Create New</a></li>
+                        <li class="nav-item"><a class="nav-link " asp-action="Index">List</a></li>
+                        <li class="nav-item"><a class="nav-link " asp-action="Edit" asp-route-id="@Model.Id">Edit  @Model.Name - @Model.Emiten </a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#">Detail of  @Model.Name - @Model.Emiten </a></li>
+                    </ul>
+
+                </div>
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <dl class="row">
+                                <dt class="col-sm-12">
+                                    @Html.DisplayNameFor(model => model.Name)
+                                </dt>
+                                <dd class="col-sm-12">
+                                    @Html.DisplayFor(model => model.Name)
+                                </dd>
+                                <dt class="col-sm-12">
+                                    @Html.DisplayNameFor(model => model.State)
+                                </dt>
+                                <dd class="col-sm-12">
+                                    @Html.DisplayFor(model => model.State)
+                                </dd>
+                                <dt class="col-sm-12">
+                                    @Html.DisplayNameFor(model => model.Lot)
+                                </dt>
+                                <dd class="col-sm-12">
+                                    @Html.DisplayFor(model => model.Lot)
+                                </dd>
+                                <dt class="col-sm-12">
+                                    @Html.DisplayNameFor(model => model.SoldAt)
+                                </dt>
+                                <dd class="col-sm-12">
+                                    @Html.DisplayFor(model => model.SoldAt)
+                                </dd>
+                                <dt class="col-sm-12">
+                                    @Html.DisplayNameFor(model => model.LessonLearned)
+                                </dt>
+                                <dd class="col-sm-12">
+                                    @Html.DisplayFor(model => model.LessonLearned)
+                                </dd>
+                                <dt class="col-sm-12">
+                                    @Html.DisplayNameFor(model => model.CreatedAt)
+                                </dt>
+                                <dd class="col-sm-12">
+                                    @Html.DisplayFor(model => model.CreatedAt)
+                                </dd>
+                                <dt class="col-sm-12">
+                                    @Html.DisplayNameFor(model => model.CreatedBy)
+                                </dt>
+                                <dd class="col-sm-12">
+                                    @Html.DisplayFor(model => model.CreatedBy)
+                                </dd>
+                                <dt class="col-sm-12">
+                                    @Html.DisplayNameFor(model => model.UpdatedAt)
+                                </dt>
+                                <dd class="col-sm-12">
+                                    @Html.DisplayFor(model => model.UpdatedAt)
+                                </dd>
+                                <dt class="col-sm-12">
+                                    @Html.DisplayNameFor(model => model.UpdatedBy)
+                                </dt>
+                                <dd class="col-sm-12">
+                                    @Html.DisplayFor(model => model.UpdatedBy)
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-4">
+                            <dl class="row">
+                                <dt class="col-sm-12 ">
+                                    Buy Price
+                                </dt>
+                                <dd class="col-sm-12 number">
+                                    @Html.DisplayFor(model => model.BuyPrice)
+                                </dd>
+                                <dt class="col-sm-12">
+                                    Cut Loss 1%
+                                </dt>
+                                <dd class="col-sm-12 number">
+                                    @{
+                                        var cl1 = Model.BuyPrice * 0.99;
+                                    }
+                                    @cl1
+                                </dd>
+                                <dt class="col-sm-12">
+                                    Cut Loss 2%
+                                </dt>
+                                <dd class="col-sm-12 number">
+                                    @{
+                                        var cl2 = Model.BuyPrice * 0.98;
+                                    }
+                                    @cl2
+                                </dd>
+                                <dt class="col-sm-12">
+                                    @Html.DisplayNameFor(model => model.LessonLearned)
+                                </dt>
+                                <dd class="col-sm-12">
+                                    @Html.DisplayFor(model => model.LessonLearned)
+                                </dd>
+                                <dt class="col-sm-12">
+                                    @Html.DisplayNameFor(model => model.CreatedAt)
+                                </dt>
+                                <dd class="col-sm-12">
+                                    @Html.DisplayFor(model => model.CreatedAt)
+                                </dd>
+                                <dt class="col-sm-12">
+                                    @Html.DisplayNameFor(model => model.CreatedBy)
+                                </dt>
+                                <dd class="col-sm-12">
+                                    @Html.DisplayFor(model => model.CreatedBy)
+                                </dd>
+                                <dt class="col-sm-12">
+                                    @Html.DisplayNameFor(model => model.UpdatedAt)
+                                </dt>
+                                <dd class="col-sm-12">
+                                    @Html.DisplayFor(model => model.UpdatedAt)
+                                </dd>
+                                <dt class="col-sm-12">
+                                    @Html.DisplayNameFor(model => model.UpdatedBy)
+                                </dt>
+                                <dd class="col-sm-12">
+                                    @Html.DisplayFor(model => model.UpdatedBy)
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <div class="row">
+                        @if (stockAdditions.Count > 0) 
+                        {
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <td>Buy at</td>
+                                        <td>But price</td>
+                                        <td>Lot</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in stockAdditions)
+                                    {
+
+                                        <tr>
+                                            <td>@item.CreatedAt</td>
+                                            <td>@item.BuyPrice</td>
+                                            <td>@item.Lot</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        
+                    </div>
+               </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $(".number").each(function () {
+                var number = parseInt($(this).text());
+                var formatted = number.toLocaleString();
+                $(this).html(formatted);
+            });
+
+        });
+    </script>
+}

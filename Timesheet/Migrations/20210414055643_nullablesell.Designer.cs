@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Timesheet.Domains.Data;
@@ -9,14 +10,15 @@ using Timesheet.Domains.Data;
 namespace Timesheet.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210414055643_nullablesell")]
+    partial class nullablesell
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.4")
+                .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
@@ -240,41 +242,6 @@ namespace Timesheet.Migrations
                     b.ToTable("StockTrxs");
                 });
 
-            modelBuilder.Entity("Timesheet.Domains.Stocks.StockTrxAddition", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("BuyPrice")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<long>("CreatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("Lot")
-                        .HasColumnType("integer");
-
-                    b.Property<long>("StockTrxId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<long>("UpdatedBy")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StockTrxId");
-
-                    b.ToTable("StockTrxAdditions");
-                });
-
             modelBuilder.Entity("Timesheet.Domains.Timesheets.Activity", b =>
                 {
                     b.Property<long>("Id")
@@ -472,17 +439,6 @@ namespace Timesheet.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Timesheet.Domains.Stocks.StockTrxAddition", b =>
-                {
-                    b.HasOne("Timesheet.Domains.Stocks.StockTrx", "StockTrx")
-                        .WithMany("stockTrxAdditions")
-                        .HasForeignKey("StockTrxId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("StockTrx");
-                });
-
             modelBuilder.Entity("Timesheet.Domains.Timesheets.Activity", b =>
                 {
                     b.HasOne("Timesheet.Domains.ActivityGroups.ActivityGroup", "ActivityGroup")
@@ -500,11 +456,6 @@ namespace Timesheet.Migrations
                     b.Navigation("ActivityGroup");
 
                     b.Navigation("ActivityType");
-                });
-
-            modelBuilder.Entity("Timesheet.Domains.Stocks.StockTrx", b =>
-                {
-                    b.Navigation("stockTrxAdditions");
                 });
 #pragma warning restore 612, 618
         }
